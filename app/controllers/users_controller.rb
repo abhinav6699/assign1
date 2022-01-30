@@ -8,14 +8,17 @@ class UsersController < ApplicationController
     if @user.save
       session[:user_id] = @user.id
       flash[:notice] = 'Profile created'
-      redirect_to root_path
+      redirect_to login_path
     else
+      flash[:notice] = 'Either email already exists in the database or password is too short or password is not matching'
       render :new
     end
   end
 
-  private
+
+private
+
   def user_params
-    params.permit(:username, :email, :password, :password_confirmation)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
 end
